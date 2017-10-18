@@ -7,6 +7,16 @@ import (
 
 type Context map[string]string
 
+func NewContextFromAnnotations(annotations []Annotation) Context {
+	ctx := Context{}
+
+	for _, a := range annotations {
+		ctx[a.Class()] = a.Val()
+	}
+
+	return ctx
+}
+
 func InterpolateContext(str string, ctx Context) string {
 	for k, v := range ctx {
 		str = strings.Replace(str, fmt.Sprintf("%%(%s)", k), v, -1)
